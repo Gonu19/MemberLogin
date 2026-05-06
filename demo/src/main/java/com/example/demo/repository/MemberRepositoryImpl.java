@@ -62,14 +62,9 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     /*메모리 내용을 JSON 파일에 저장*/
-    private  void saveDataToFile() {
-        try{
-            List<Member> members = new ArrayList<>(store.values());
-            objectMapper.writeValue(new File(DATA_FILE_PATH), members);
-        }catch (IOException e){
-            log.error("회원 데이터 저장 실패",e);
-            throw new RuntimeException("데이터 저장 실패",e);
-        }
+    private  void saveDataToFile() throws IOException {
+        List<Member> members = new ArrayList<>(store.values());
+        objectMapper.writeValue(new File(DATA_FILE_PATH), members);
     }
     @Override
     public void save(Member member){
@@ -86,7 +81,11 @@ public class MemberRepositoryImpl implements MemberRepository {
             store.put(member.getId(),member);
         }
         /*이미 id가 있다면 그 id로 store에 덮어쓰기*/
-        saveDataToFile();
+        try {
+            saveDataToFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         /*전체 회원 데이터를 파일에 저장*/
     }
 }
