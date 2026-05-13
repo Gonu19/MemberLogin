@@ -50,10 +50,12 @@ public class MemberDTO {
      응답 전용 DTO*/
     }
 
+
     @Data
     @AllArgsConstructor
     public static class Result<T>{
         private T data;
     }
     //공통 응답 규격, 모든 API 응답이 일관된 형식을 가지게 해줌
+
 }
